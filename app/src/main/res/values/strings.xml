@@ -2,6 +2,7 @@
     <string name="app_name">Tripping</string>
     <string name="new_user_register_now">New User? Register Now</string>
     <string name="login">Login</string>
+    <string name="register">Register</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="already_have_account">Already have an account?</string>

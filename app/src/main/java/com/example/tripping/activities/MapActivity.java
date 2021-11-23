@@ -6,9 +6,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.tripping.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -48,5 +50,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         LatLng currentLocation = new LatLng(0, 0);
         map.addMarker(new MarkerOptions().position(currentLocation));
         map.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+    }
+
+    public void goToProfile(View view) {
+        Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+        startActivity(intent);
     }
 }

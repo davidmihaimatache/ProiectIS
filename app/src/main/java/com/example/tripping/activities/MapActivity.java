@@ -56,4 +56,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
+    public void goToSettings(View view) {
+        Intent intent = new Intent(MapActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
 }

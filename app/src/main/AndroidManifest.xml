@@ -31,6 +31,9 @@
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:exported="false" />
         <activity android:name=".activities.MapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

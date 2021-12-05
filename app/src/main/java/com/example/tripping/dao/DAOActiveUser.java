@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.tripping.interfaces.OnGetDataActiveUsers;
 import com.example.tripping.interfaces.OnGetDataListener;
+import com.example.tripping.interfaces.OnUpdateDataListener;
 import com.example.tripping.models.ActiveUser;
 import com.example.tripping.models.User;
 import com.google.android.gms.tasks.Task;
@@ -49,7 +50,7 @@ public class DAOActiveUser {
         });
     }
 
-    public void update(ActiveUser activeUser){
+    public void update(ActiveUser activeUser,final OnUpdateDataListener onUpdateDataListener){
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -59,6 +60,7 @@ public class DAOActiveUser {
                         usernameSnapshot.getRef().child("longitude").setValue(activeUser.getLongitude());
                     }
                 }
+                onUpdateDataListener.onSuccess();
             }
 
             @Override

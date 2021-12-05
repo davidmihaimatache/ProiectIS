@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.example.tripping.R;
 import com.example.tripping.dao.DAOActiveUser;
 import com.example.tripping.interfaces.OnGetDataActiveUsers;
+import com.example.tripping.interfaces.OnUpdateDataListener;
 import com.example.tripping.models.ActiveUser;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -74,7 +75,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private ActiveUser currentUser;
     private DAOActiveUser daoActiveUser;
-    private List<ActiveUser>activeUsersList;
+    private List<ActiveUser> activeUsersList;
     private List<Marker> markerList;
 
     @Override
@@ -132,12 +133,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             canvas.restore();
             try {
                 canvas.setBitmap(null);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
         return result;
     }
+
     public int dp(float value) {
         if (value == 0) {
             return 0;
@@ -146,8 +149,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
-
-    private void getAllActiveUsersList(){
+    private void getAllActiveUsersList() {
         daoActiveUser.readData(new OnGetDataActiveUsers() {
             @Override
             public void onSuccess(List<ActiveUser> userList) {
@@ -197,28 +199,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     public void onLocationChanged(Location location) {
         // New location has now been determined
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//        String msg = "Updated Location: " +
+//                Double.toString(location.getLatitude()) + "," +
+//                Double.toString(location.getLongitude());
+//        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         // You can now create a LatLng Object for use with maps
 
         currentUser.setLatitude(location.getLatitude());
         currentUser.setLongitude(location.getLongitude());
-        daoActiveUser.update(currentUser);
-        LatLng latLng = new LatLng(currentUser.getLatitude(), currentUser.getLongitude());
-        markerOptions.position(latLng).title(currentUser.getUsername());
-        Marker marker = map.addMarker(markerOptions);
-        markerList.add(marker);
-        marker.showInfoWindow();
-
-
-        FirebaseDatabase.getInstance().getReference(ActiveUser.class.getSimpleName()).addValueEventListener(new ValueEventListener() {
+        daoActiveUser.update(currentUser, new OnUpdateDataListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(activeUsersList != null){
-                    for(ActiveUser activeUser:activeUsersList){
-                        if(activeUser.getLatitude()>0 && activeUser.getLongitude()>0){
+            public void onSuccess() {
+                getAllActiveUsersList();
+
+                if(markerList != null){
+                    for(Marker markerAux:markerList){
+                        markerAux.remove();
+                    }
+                    markerList.clear();
+                }
+                if (activeUsersList != null) {
+                    for (ActiveUser activeUser : activeUsersList) {
+                        if (activeUser.getLatitude() > 0 && activeUser.getLongitude() > 0) {
                             LatLng latLng2 = new LatLng(activeUser.getLatitude(), activeUser.getLongitude());
                             markerOptions.position(latLng2).title(activeUser.getUsername());
                             Marker marker2 = map.addMarker(markerOptions);
@@ -229,11 +231,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 }
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
         });
+
 
     }
 
@@ -297,6 +297,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
+
     private boolean checkPermissions() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -317,6 +318,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
+
     public void goToSettings(View view) {
         Intent intent = new Intent(MapActivity.this, SettingsActivity.class);
         startActivity(intent);

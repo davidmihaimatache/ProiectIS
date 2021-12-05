@@ -10,8 +10,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tripping.R;
+import com.example.tripping.dao.DAOActiveUser;
 import com.example.tripping.dao.DAOUser;
 import com.example.tripping.interfaces.OnGetDataListener;
+import com.example.tripping.models.ActiveUser;
 import com.example.tripping.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private DAOUser daoUser;
+    private DAOActiveUser daoActiveUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         username = findViewById(R.id.inputUsername);
         password = findViewById(R.id.inputPassword);
         daoUser = new DAOUser();
+        daoActiveUser = new DAOActiveUser();
     }
 
 
@@ -53,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 boolean isUser = false;
                 for(User user:userList){
                     if(user.getUsername().equals(username) && user.getPassword().equals(password)){
+
+                        ActiveUser activeUser = new ActiveUser(username);
+                        daoActiveUser.insert(activeUser);
+
                         Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                        intent.putExtra("currentUser",activeUser);
+
                         startActivity(intent);
                         isUser = true;
                     }

@@ -61,8 +61,11 @@ public class MainActivity extends AppCompatActivity {
                         ActiveUser activeUser = new ActiveUser(username);
                         daoActiveUser.insert(activeUser);
 
+                        User currentUserData = user;
+
                         Intent intent = new Intent(MainActivity.this, MapActivity.class);
                         intent.putExtra("currentUser",activeUser);
+                        intent.putExtra("currentUserData",currentUserData);
 
                         startActivity(intent);
                         isUser = true;

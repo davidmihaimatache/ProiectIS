@@ -2,12 +2,14 @@ package com.example.tripping.models;
 
 import android.location.Location;
 import android.media.Image;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.tripping.enums.Status;
 
 import java.util.Date;
 
-public class User {
+public class User implements Parcelable {
 
 
     //region Declarations
@@ -15,11 +17,9 @@ public class User {
     // int userID will be added in the UserDAO
     private String mUsername;
     private String mPassword;
-    private Location mLocation;
-    private Image mPhoto;
-    private Date mLastConnection;
-    private Status mStatus;
     private String mEMailAddress;
+    private String mAge;
+    private String mPhoneNumber;
 
     //endregion
 
@@ -38,6 +38,26 @@ public class User {
 
     //region Getters and Setters
 
+    protected User(Parcel in) {
+        mUsername = in.readString();
+        mPassword = in.readString();
+        mEMailAddress = in.readString();
+        mAge = in.readString();
+        mPhoneNumber = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
     public String getUsername()
     {
         return mUsername;
@@ -46,54 +66,51 @@ public class User {
     {
         return mPassword;
     }
-    public Location getLocation()
-    {
-        return mLocation;
-    }
-    public Image getPhoto()
-    {
-        return mPhoto;
-    }
-    public Date getLastConnection()
-    {
-        return mLastConnection;
-    }
-    public Status getStatus()
-    {
-        return mStatus;
-    }
-    public String getEMailAddress()
-    {
+
+    public String getEMailAddress() {
         return mEMailAddress;
     }
 
-    public void setUsername(String nUsername)
-    {
-        mUsername = nUsername;
+    public void setEMailAddress(String mEMailAddress) {
+        this.mEMailAddress = mEMailAddress;
     }
-    public void setPassword(String nUsername)
-    {
-        mUsername = mPassword;
+
+    public String getAge() {
+        return mAge;
     }
-    public void setLocation(Location nLocation)
-    {
-        mLocation = nLocation;
+
+    public void setAge(String mAge) {
+        this.mAge = mAge;
     }
-    public void setPhoto(Image nPhoto)
-    {
-        mPhoto = nPhoto;
+
+    public String getPhoneNumber() {
+        return mPhoneNumber;
     }
-    public void setLastConnection(Date nLastConnection)
-    {
-        mLastConnection = nLastConnection;
+
+    public void setPhoneNumber(String mPhoneNumber) {
+        this.mPhoneNumber = mPhoneNumber;
     }
-    public void setStatus(Status nStatus)
-    {
-        mStatus = nStatus;
+
+    public void setUsername(String username){
+        this.mUsername = username;
     }
-    public void setEMailAddress(String nEMailAddress)
-    {
-        mEMailAddress = nEMailAddress;
+
+    public void setPassword(String password){
+        this.mPassword = password;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mUsername);
+        parcel.writeString(mPassword);
+        parcel.writeString(mEMailAddress);
+        parcel.writeString(mAge);
+        parcel.writeString(mPhoneNumber);
     }
 
     //endregion

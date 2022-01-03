@@ -53,7 +53,13 @@ public class DAOUser {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<User>userList = new ArrayList<>();
                 for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                    User user = new User(snapshot.child("username").getValue().toString(),snapshot.child("password").getValue().toString());
+                    User user = new User();
+                    user.setUsername(snapshot.child("username").getValue().toString());
+                    user.setPassword(snapshot.child("password").getValue().toString());
+                    user.setAge(snapshot.child("age").getValue().toString());
+                    user.setEMailAddress(snapshot.child("emailAddress").getValue().toString());
+                    user.setPhoneNumber(snapshot.child("phoneNumber").getValue().toString());
+
                     userList.add(user);
                 }
                 listener.onSuccess(userList);

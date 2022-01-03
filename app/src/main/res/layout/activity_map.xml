@@ -19,26 +19,61 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:background="@color/black"
+        android:background="@color/transparent"
         android:gravity="bottom">
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="76dp"
-        android:background="@drawable/round_bg"
+        android:id="@+id/profileButton"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        android:layout_weight=".25"
+        android:background="@drawable/button_border"
         android:clickable="true"
         android:onClick="goToProfile"
-        android:text="@string/profile" />
+        android:text="@string/profile"
+        android:textColor="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_person_input"
+        />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="100dp"
-        android:layout_height="76dp"
+        android:id="@+id/settingsButton"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        android:layout_weight=".25"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/round_bg"
+        android:background="@drawable/button_border"
         android:clickable="true"
         android:onClick="goToSettings"
-        android:text="@string/settings" />
+        android:textColor="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_online"
+        android:text="@string/active_users" />
+
+        <Button
+            android:id="@+id/users"
+            android:layout_width="0dp"
+            android:layout_height="85dp"
+            android:layout_weight=".25"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_border"
+            android:clickable="true"
+            android:onClick="goToUsers"
+            android:textColor="@color/colorPrimary"
+            android:drawableLeft="@drawable/ic_people"
+            android:text="@string/users" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="0dp"
+            android:layout_height="85dp"
+            android:layout_weight=".25"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_border"
+            android:clickable="true"
+            android:onClick="goToLogin"
+            android:textColor="@color/colorPrimary"
+            android:drawableLeft="@drawable/ic_logout"
+            android:text="@string/logout" />
+
     </LinearLayout>
 
 </RelativeLayout>

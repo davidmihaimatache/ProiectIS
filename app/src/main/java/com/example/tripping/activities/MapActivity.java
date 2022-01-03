@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripping.R;
@@ -34,6 +35,7 @@ import com.example.tripping.dao.DAOActiveUser;
 import com.example.tripping.interfaces.OnGetDataActiveUsers;
 import com.example.tripping.interfaces.OnUpdateDataListener;
 import com.example.tripping.models.ActiveUser;
+import com.example.tripping.models.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -74,6 +76,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     private ActiveUser currentUser;
+    private User currentUserData;
     private DAOActiveUser daoActiveUser;
     private List<ActiveUser> activeUsersList;
     private List<Marker> markerList;
@@ -96,6 +99,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         Intent intent = getIntent();
         currentUser = (ActiveUser) intent.getParcelableExtra("currentUser");
+        currentUserData = (User) intent.getParcelableExtra("currentUserData");
         daoActiveUser = new DAOActiveUser();
 
         getAllActiveUsersList();
@@ -225,7 +229,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             markerOptions.position(latLng2).title(activeUser.getUsername());
                             Marker marker2 = map.addMarker(markerOptions);
                             markerList.add(marker2);
-                            marker2.showInfoWindow();
+
                         }
                     }
                 }
@@ -236,6 +240,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
 
     }
+
 
     public void getLastLocation() {
         // Get last known recent location using new Google Play Services SDK (v11+)
@@ -315,12 +320,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public void goToProfile(View view) {
+
         Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+        intent.putExtra("currentUserData",currentUserData);
         startActivity(intent);
     }
 
     public void goToSettings(View view) {
-        Intent intent = new Intent(MapActivity.this, SettingsActivity.class);
+        Intent intent = new Intent(MapActivity.this, ActiveUsersActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToLogin(View view) {
+        onBackPressed();
+    }
+
+    public void goToUsers(View view) {
+        Intent intent = new Intent(MapActivity.this, UsersActivity.class);
         startActivity(intent);
     }
 }
